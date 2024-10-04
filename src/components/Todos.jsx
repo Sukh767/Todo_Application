@@ -1,6 +1,6 @@
 import React from 'react'
 import { useSelector, useDispatch } from 'react-redux';
-import { removeTodo } from '../features/Todo/todoSlice';
+import { markAsDone, removeTodo } from '../features/Todo/todoSlice';
 
 const Todos = () => {
   const todos = useSelector(state => state.todos);  // Ensure you're accessing state.todo.todos
@@ -13,7 +13,9 @@ const Todos = () => {
         {todos.map((todo) => (
           <li
             key={todo.id}
-            className="flex justify-between items-center bg-zinc-800 px-4 py-2 rounded shadow-md"
+            className={`flex justify-between items-center px-4 py-2 rounded shadow-md
+              ${todo.isDone ? 'bg-green-900' : 'bg-zinc-800'}
+            `}
           >
             <div className="text-white">{todo.task}</div>
             <button
@@ -34,6 +36,13 @@ const Todos = () => {
                   d="M6 18L18 6M6 6l12 12"
                 />
               </svg>
+            </button>
+            <button
+                onClick={() => dispatch(markAsDone(todo.id))}
+                className={`text-white py-1 px-4 rounded 
+                  ${todo.isDone ? 'bg-teal-400 hover:bg-teal-600' : 'bg-green-500 hover:bg-green-600'}`}
+              >
+                {todo.isDone ? 'Undo' : 'Mark as Done'}
             </button>
           </li>
         ))}
